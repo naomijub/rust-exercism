@@ -6,7 +6,6 @@ fn test_stating_something() {
 }
 
 #[test]
-#[ignore]
 fn test_shouting() {
     assert_eq!("Whoa, chill out!", bob::reply("WATCH OUT!"));
 }
