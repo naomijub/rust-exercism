@@ -22,15 +22,12 @@ fn test_8() { assert_eq!("8", raindrops::raindrops(8)); }
 fn test_9() { assert_eq!("Pling", raindrops::raindrops(9)); }
 
 #[test]
-#[ignore]
 fn test_10() { assert_eq!("Plang", raindrops::raindrops(10)); }
 
 #[test]
-#[ignore]
 fn test_14() { assert_eq!("Plong", raindrops::raindrops(14)); }
 
 #[test]
-#[ignore]
 fn test_15() { assert_eq!("PlingPlang", raindrops::raindrops(15)); }
 
 #[test]
