@@ -1,7 +1,4 @@
 pub fn is_leap_year(year: u32) -> bool {
-    is_multiple(year, 4) && (is_multiple(year, 400) || !is_multiple(year, 100))
-}
-
-fn is_multiple(year: u32, num: u32) -> bool {
-    year % num == 0
+    let is_mult = |n| year % n == 0;
+    is_mult(4) && (is_mult(400) || !is_mult(100))
 }
