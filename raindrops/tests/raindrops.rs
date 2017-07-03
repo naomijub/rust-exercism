@@ -7,7 +7,6 @@ fn test_1() { assert_eq!("1", raindrops::raindrops(1)); }
 fn test_3() { assert_eq!("Pling", raindrops::raindrops(3)); }
 
 #[test]
-#[ignore]
 fn test_5() { assert_eq!("Plang", raindrops::raindrops(5)); }
 
 #[test]
