@@ -9,7 +9,7 @@ pub fn raindrops(num: i32) -> String {
     if num % 7 == 0 {
         answer.push_str("Plong");
     }
-    if answer.is_empty() { 
+    if answer.is_empty() {
         let s = format!("{}", num);
         answer.push_str(&s);
     }
