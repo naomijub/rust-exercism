@@ -4,7 +4,6 @@ extern crate raindrops;
 fn test_1() { assert_eq!("1", raindrops::raindrops(1)); }
 
 #[test]
-#[ignore]
 fn test_3() { assert_eq!("Pling", raindrops::raindrops(3)); }
 
 #[test]
