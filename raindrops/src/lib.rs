@@ -4,8 +4,11 @@ pub fn raindrops(num: i32) -> String {
         answer.push_str("Pling");
     } else if num % 5 == 0 {
         answer.push_str("Plang");
+    } else if num % 7 == 0 {
+        answer.push_str("Plong");
     } else {
-        answer.push_str("1");
+        let s = format!("{}", num);
+        answer.push_str(&s);
     }
     answer
 }
