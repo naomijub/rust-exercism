@@ -22,39 +22,33 @@ fn test_asking() {
 }
 
 #[test]
-#[ignore]
 fn test_ask_numeric_question() {
     assert_eq!("Sure.", bob::reply("You are, what, like 15?"));
 }
 
 #[test]
-#[ignore]
 fn test_asking_gibberish() {
     assert_eq!("Sure.", bob::reply("fffbbcbeab?"));
 }
 
 #[test]
-#[ignore]
 fn test_exclaiming() {
     assert_eq!("Whatever.", bob::reply("Let's go make out behind the gym!"));
 }
 
 #[test]
-#[ignore]
 fn test_using_acronyms_in_regular_speech() {
     assert_eq!("Whatever.",
                bob::reply("It's OK if you don't want to go to the DMV."));
 }
 
 #[test]
-#[ignore]
 fn test_forceful_question() {
     assert_eq!("Whoa, chill out!",
                bob::reply("WHAT THE HELL WERE YOU THINKING?"));
 }
 
 #[test]
-#[ignore]
 fn test_shouting_numbers() {
     assert_eq!("Whoa, chill out!", bob::reply("1, 2, 3 GO!"));
 }
@@ -65,44 +59,37 @@ fn test_only_numbers() {
 }
 
 #[test]
-#[ignore]
 fn test_question_with_only_numbers() {
     assert_eq!("Sure.", bob::reply("4?"));
 }
 
 #[test]
-#[ignore]
 fn test_shouting_with_special_characters() {
     assert_eq!("Whoa, chill out!",
                bob::reply("ZOMG THE %^*@#$(*^ ZOMBIES ARE COMING!!11!!1!"));
 }
 
 #[test]
-#[ignore]
 fn test_shouting_with_no_exclamation_mark() {
     assert_eq!("Whoa, chill out!", bob::reply("I HATE YOU"));
 }
 
 #[test]
-#[ignore]
 fn test_statement_containing_question_mark() {
     assert_eq!("Whatever.", bob::reply("Ending with ? means a question."));
 }
 
 #[test]
-#[ignore]
 fn test_non_letters_with_question() {
     assert_eq!("Sure.", bob::reply(":) ?"));
 }
 
 #[test]
-#[ignore]
 fn test_prattling_on() {
     assert_eq!("Sure.", bob::reply("Wait! Hang on. Are you going to be OK?"));
 }
 
 #[test]
-#[ignore]
 fn test_silence() {
     assert_eq!("Fine. Be that way!", bob::reply(""));
 }
