@@ -6,7 +6,6 @@ fn test_verse_0() {
 }
 
 #[test]
-#[ignore]
 fn test_verse_1() {
     assert_eq!(beer::verse(1), "1 bottle of beer on the wall, 1 bottle of beer.\nTake it down and pass it around, no more bottles of beer on the wall.\n");
 }
