@@ -16,7 +16,6 @@ fn test_shouting_gibberish() {
 }
 
 #[test]
-#[ignore]
 fn test_asking() {
     assert_eq!("Sure.",
                bob::reply("Does this cryogenic chamber make me look fat?"));
