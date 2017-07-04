@@ -95,13 +95,11 @@ fn test_silence() {
 }
 
 #[test]
-#[ignore]
 fn test_prolonged_silence() {
     assert_eq!("Fine. Be that way!", bob::reply("          "));
 }
 
 #[test]
-#[ignore]
 fn test_alternate_silence() {
     assert_eq!("Fine. Be that way!", bob::reply("\t\t\t\t\t\t\t\t\t\t"));
 }

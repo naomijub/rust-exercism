@@ -19,5 +19,5 @@ fn is_question(s: &str) -> bool {
 }
 
 fn is_silence(s: &str) -> bool {
-    s.is_empty()
+    s.trim().is_empty()
 }
