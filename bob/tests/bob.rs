@@ -105,33 +105,28 @@ fn test_alternate_silence() {
 }
 
 #[test]
-#[ignore]
 fn test_multiple_line_question() {
     assert_eq!("Whatever.", bob::reply(
         "\nDoes this cryogenic chamber make me look fat?\nno"));
 }
 
 #[test]
-#[ignore]
 fn test_starting_with_whitespace() {
     assert_eq!("Whatever.", bob::reply("         hmmmmmmm..."));
 }
 
 #[test]
-#[ignore]
 fn test_ending_with_whitespace() {
     assert_eq!("Sure.",
                bob::reply("Okay if like my  spacebar  quite a bit?   "));
 }
 
 #[test]
-#[ignore]
 fn test_other_whitespace() {
     assert_eq!("Fine. Be that way!", bob::reply("\n\r \t"));
 }
 
 #[test]
-#[ignore]
 fn test_non_question_ending_with_whitespace() {
     assert_eq!("Whatever.",
                bob::reply("This is a statement ending with whitespace      "));
