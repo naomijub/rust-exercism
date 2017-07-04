@@ -11,7 +11,6 @@ fn test_shouting() {
 }
 
 #[test]
-#[ignore]
 fn test_shouting_gibberish() {
     assert_eq!("Whoa, chill out!", bob::reply("FCECDFCAAB"));
 }

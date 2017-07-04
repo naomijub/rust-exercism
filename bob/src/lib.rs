@@ -1,7 +1,3 @@
-extern crate regex;
-
-use regex::Regex;
-
 pub fn reply(s: &str) -> &str {
     if is_screaming(&s) {
         return "Whoa, chill out!"
@@ -10,6 +6,6 @@ pub fn reply(s: &str) -> &str {
 }
 
 fn is_screaming(s: &str) -> bool {
-    let re = Regex::new(r"[AZ]").unwrap();
-    re.is_match(&s)
+    let chars = s.trim_matches(|c: char| !c.is_alphabetic());
+    !chars.is_empty() && chars.to_uppercase() == chars
 }
