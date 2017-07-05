@@ -21,13 +21,11 @@ fn test_sum_of_squares_1() {
 }
 
 #[test]
-#[ignore]
 fn test_sum_of_squares_5() {
     assert_eq!(55, squares::sum_of_squares(5));
 }
 
 #[test]
-#[ignore]
 fn test_sum_of_squares_100() {
     assert_eq!(338350, squares::sum_of_squares(100));
 }
