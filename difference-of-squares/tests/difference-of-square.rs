@@ -36,13 +36,11 @@ fn test_difference_1() {
 }
 
 #[test]
-#[ignore]
 fn test_difference_5() {
     assert_eq!(170, squares::difference(5));
 }
 
 #[test]
-#[ignore]
 fn test_difference_100() {
     assert_eq!(25164150, squares::difference(100));
 }
