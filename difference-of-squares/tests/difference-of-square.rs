@@ -16,7 +16,6 @@ fn test_square_of_sum_100() {
 }
 
 #[test]
-#[ignore]
 fn test_sum_of_squares_1() {
     assert_eq!(1, squares::sum_of_squares(1));
 }
