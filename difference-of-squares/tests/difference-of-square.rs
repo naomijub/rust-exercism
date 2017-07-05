@@ -31,7 +31,6 @@ fn test_sum_of_squares_100() {
 }
 
 #[test]
-#[ignore]
 fn test_difference_1() {
     assert_eq!(0, squares::difference(1));
 }
