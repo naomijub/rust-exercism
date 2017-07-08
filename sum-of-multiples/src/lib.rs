@@ -1,10 +1,17 @@
+use std::collections::BTreeSet;
+
 pub fn sum_of_multiples(num: u32, vec: &[u32]) -> u32 {
-    let mut sum :u32 = 0;
+    let mut multiples: BTreeSet<u32> = BTreeSet::new();
 
     for &v in vec {
-        if v < num {
-            sum += v;
+        let mut factor = 2;
+        let mut x = v;
+        while x < num {
+            multiples.insert(x);
+            x = v * factor;
+            factor += 1;
         }
     }
-    sum
+
+    multiples.iter().sum()
 }

@@ -13,7 +13,6 @@ fn multiples_two() {
 }
 
 #[test]
-#[ignore]
 fn multiples_three() {
     assert_eq!(23, sum_of_multiples(10, &vec![3, 5]))
 }
