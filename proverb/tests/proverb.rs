@@ -32,7 +32,6 @@ fn test_one_piece() {
 }
 
 #[test]
-#[ignore]
 fn test_zero_pieces() {
     let input: Vec<&str> = vec![];
     let expected = String::new();
