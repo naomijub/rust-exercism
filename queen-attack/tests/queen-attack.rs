@@ -38,7 +38,6 @@ fn queens_on_the_same_rank_can_attack() {
 }
 
 #[test]
-#[ignore]
 fn queens_on_the_same_file_can_attack() {
     let white_queen = Queen::new(ChessPosition::new(4, 5).unwrap());
     let black_queen = Queen::new(ChessPosition::new(3, 5).unwrap());
