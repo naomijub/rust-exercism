@@ -57,20 +57,17 @@ fn test_empty_strand() {
 }
 
 #[test]
-#[ignore]
 /// can count one nucleotide in single-character input
 fn test_can_count_one_nucleotide_in_singlecharacter_input() {
     process_nucleotidecounts_case("G", &[('A', 0), ('C', 0), ('G', 1), ('T', 0)]);
 }
 
 #[test]
-#[ignore]
 fn test_strand_with_repeated_nucleotide() {
     process_nucleotidecounts_case("GGGGGGG", &[('A', 0), ('T', 0), ('C', 0), ('G', 7)]);
 }
 
 #[test]
-#[ignore]
 /// strand with multiple nucleotides
 fn test_strand_with_multiple_nucleotides() {
     process_nucleotidecounts_case(
@@ -80,13 +77,11 @@ fn test_strand_with_multiple_nucleotides() {
 }
 
 #[test]
-#[ignore]
 fn counts_invalid_nucleotide_results_in_err() {
     assert_eq!(dna::nucleotide_counts("GGXXX"), Err('X'));
 }
 
 #[test]
-#[ignore]
 /// strand with invalid nucleotides
 fn test_strand_with_invalid_nucleotides() {
     assert_eq!(dna::nucleotide_counts("AGXXACT"), Err('X'),);

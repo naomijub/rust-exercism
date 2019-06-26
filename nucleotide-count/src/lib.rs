@@ -22,10 +22,16 @@ pub fn count(nucleotide: char, dna: &str) -> Result<usize, char> {
 
 pub fn nucleotide_counts(dna: &str) -> Result<HashMap<char, usize>, char> {
     let mut nucleotide_count = HashMap::new();
-    nucleotide_count.insert('A', count('A', dna).unwrap());
-    nucleotide_count.insert('T', count('T', dna).unwrap());
-    nucleotide_count.insert('C', count('C', dna).unwrap());
-    nucleotide_count.insert('G', count('G', dna).unwrap());
 
-    Ok(nucleotide_count)
+    match count('A', dna) {
+        Err(x) => Err(x),
+        Ok(_) => {
+            nucleotide_count.insert('A', count('A', dna).unwrap());
+            nucleotide_count.insert('T', count('T', dna).unwrap());
+            nucleotide_count.insert('C', count('C', dna).unwrap());
+            nucleotide_count.insert('G', count('G', dna).unwrap());
+
+            Ok(nucleotide_count)
+        }
+    }
 }
