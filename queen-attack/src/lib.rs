@@ -20,9 +20,9 @@ impl Queen {
     }
 
     pub fn can_attack(&self, other: &Queen) -> bool {
-        unimplemented!(
-            "Determine if this Queen can attack the other Queen {:?}",
-            other
-        );
+        match (&self, other) {
+            (x, y) if (x.0).0 == (y.0).0 => true,
+            _ => false
+        }
     }
 }

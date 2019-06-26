@@ -22,7 +22,6 @@ fn queen_is_created_with_a_valid_position() {
 }
 
 #[test]
-#[ignore]
 fn queens_that_can_not_attack() {
     let white_queen = Queen::new(ChessPosition::new(2, 4).unwrap());
     let black_queen = Queen::new(ChessPosition::new(6, 6).unwrap());
@@ -31,7 +30,6 @@ fn queens_that_can_not_attack() {
 }
 
 #[test]
-#[ignore]
 fn queens_on_the_same_rank_can_attack() {
     let white_queen = Queen::new(ChessPosition::new(2, 4).unwrap());
     let black_queen = Queen::new(ChessPosition::new(2, 6).unwrap());
