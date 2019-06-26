@@ -21,8 +21,6 @@ pub fn count(nucleotide: char, dna: &str) -> Result<usize, char> {
 }
 
 pub fn nucleotide_counts(dna: &str) -> Result<HashMap<char, usize>, char> {
-    unimplemented!(
-        "How much of every nucleotide type is contained inside DNA string '{}'?",
-        dna
-    );
+    let nucleotide_count = HashMap::new();
+    Ok(nucleotide_count)
 }

@@ -47,7 +47,6 @@ fn test_count_only_thymine() {
 }
 
 #[test]
-#[ignore]
 fn counts_returns_result() {
     assert!(dna::nucleotide_counts("ACGT").is_ok());
 }
