@@ -64,7 +64,6 @@ fn queens_on_the_same_diagonal_can_attack_two() {
 }
 
 #[test]
-#[ignore]
 fn queens_on_the_same_diagonal_can_attack_three() {
     let white_queen = Queen::new(ChessPosition::new(2, 2).unwrap());
     let black_queen = Queen::new(ChessPosition::new(1, 1).unwrap());
@@ -73,7 +72,6 @@ fn queens_on_the_same_diagonal_can_attack_three() {
 }
 
 #[test]
-#[ignore]
 fn queens_on_the_same_diagonal_can_attack_four() {
     let white_queen = Queen::new(ChessPosition::new(2, 2).unwrap());
     let black_queen = Queen::new(ChessPosition::new(5, 5).unwrap());
