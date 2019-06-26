@@ -52,7 +52,6 @@ fn counts_returns_result() {
 }
 
 #[test]
-#[ignore]
 fn test_empty_strand() {
     process_nucleotidecounts_case("", &[('A', 0), ('T', 0), ('C', 0), ('G', 0)]);
 }
