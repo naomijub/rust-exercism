@@ -1,3 +1,8 @@
+const FULL_HOUR: i32 = 24;
+const FULL_MINUTES: i32 = 60;
+const EXTRA_MINS: i32 = -1;
+
+
 #[derive(Debug)]
 #[derive(PartialEq)]
 pub struct Clock {
@@ -7,14 +12,25 @@ pub struct Clock {
 
 impl Clock {
     pub fn new(hours: i32, minutes: i32) -> Self {
+        let extra_min = minutes / FULL_MINUTES;
+
         let hour = match hours {
-            h if hours >= 0 => h,
-            x if hours < 0 => 24 + x,
+            hr if hours >= 0 && minutes < 0 && minutes >= -60
+              => hr + EXTRA_MINS,
+            hr if hours >= 0 && minutes < 0 
+              => hr + (FULL_HOUR + (extra_min % 24) + EXTRA_MINS),
+            h if hours >= 0 => h + extra_min,
+            x if hours < 0 => FULL_HOUR + (x % FULL_HOUR),
             _ => 0
         };
 
-        let extra_min = minutes / 60;
-        Clock{hours: (hour + extra_min) % 24, minutes: minutes % 60}
+        let minute = match minutes {
+            m if minutes >= 0 => m,
+            x if minutes < 0 => FULL_MINUTES + (x % FULL_MINUTES),
+            _ => 0
+        };
+
+        Clock{hours: hour % FULL_HOUR, minutes: minute % FULL_MINUTES}
     }
 
     pub fn add_minutes(&self, minutes: i32) -> Self {

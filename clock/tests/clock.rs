@@ -65,37 +65,31 @@ fn test_negative_hour() {
 }
 
 #[test]
-#[ignore]
 fn test_negative_hour_roll_over() {
     assert_eq!(Clock::new(-25, 00).to_string(), "23:00");
 }
 
 #[test]
-#[ignore]
 fn test_negative_hour_roll_over_continuously() {
     assert_eq!(Clock::new(-91, 00).to_string(), "05:00");
 }
 
 #[test]
-#[ignore]
 fn test_negative_minutes() {
     assert_eq!(Clock::new(1, -40).to_string(), "00:20");
 }
 
 #[test]
-#[ignore]
 fn test_negative_minutes_roll_over() {
     assert_eq!(Clock::new(1, -160).to_string(), "22:20");
 }
 
 #[test]
-#[ignore]
 fn test_negative_minutes_roll_over_continuously() {
     assert_eq!(Clock::new(1, -4820).to_string(), "16:40");
 }
 
 #[test]
-#[ignore]
 fn test_negative_sixty_minutes_is_prev_hour() {
     assert_eq!(Clock::new(2, -60).to_string(), "01:00");
 }
