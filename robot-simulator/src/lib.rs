@@ -38,7 +38,16 @@ impl Robot {
     }
 
     pub fn advance(self) -> Self {
-        unimplemented!()
+        match self.direction {
+            Direction::North => 
+                Robot {position: (self.position.0, self.position.1 + 1), direction: self.direction},
+            Direction::East => 
+                Robot {position: (self.position.0 + 1, self.position.1), direction: self.direction},
+            Direction::South => 
+                Robot {position: (self.position.0, self.position.1 - 1), direction: self.direction},
+            Direction::West => 
+                Robot {position: (self.position.0 - 1, self.position.1), direction: self.direction}
+        }  
     }
 
     pub fn instructions(self, instructions: &str) -> Self {

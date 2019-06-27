@@ -75,35 +75,30 @@ fn turning_left_from_east_points_the_robot_north() {
 }
 
 #[test]
-#[ignore]
 fn advance_does_not_change_the_direction() {
     let robot = Robot::new(0, 0, Direction::North).advance();
     assert_eq!(&Direction::North, robot.direction());
 }
 
 #[test]
-#[ignore]
 fn advance_increases_the_y_coordinate_by_one_when_facing_north() {
     let robot = Robot::new(0, 0, Direction::North).advance();
     assert_eq!((0, 1), robot.position());
 }
 
 #[test]
-#[ignore]
 fn advance_decreases_the_y_coordinate_by_one_when_facing_south() {
     let robot = Robot::new(0, 0, Direction::South).advance();
     assert_eq!((0, -1), robot.position());
 }
 
 #[test]
-#[ignore]
 fn advance_increases_the_x_coordinate_by_one_when_facing_east() {
     let robot = Robot::new(0, 0, Direction::East).advance();
     assert_eq!((1, 0), robot.position());
 }
 
 #[test]
-#[ignore]
 fn advance_decreases_the_x_coordinate_by_one_when_facing_west() {
     let robot = Robot::new(0, 0, Direction::West).advance();
     assert_eq!((-1, 0), robot.position());
