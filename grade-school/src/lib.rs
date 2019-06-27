@@ -25,6 +25,16 @@ impl School {
     // By returning an owned vector instead,
     // the internal implementation is free to use whatever it chooses.
     pub fn grade(&self, grade: u32) -> Option<Vec<String>> {
-        None
+        match self.grades().contains(&grade) {
+            true => {let mut students = 
+                            self.grades
+                            .iter()
+                            .filter(|x| x.0 == grade)
+                            .map(|s| s.1.to_owned())
+                            .collect::<Vec<String>>();
+                    students.sort();
+                    Some(students)},
+            false => None
+        }
     }
 }
