@@ -95,13 +95,11 @@ fn test_negative_sixty_minutes_is_prev_hour() {
 }
 
 #[test]
-#[ignore]
 fn test_negative_hour_and_minutes_both_roll_over() {
     assert_eq!(Clock::new(-25, -160).to_string(), "20:20");
 }
 
 #[test]
-#[ignore]
 fn test_negative_hour_and_minutes_both_roll_over_continuously() {
     assert_eq!(Clock::new(-121, -5810).to_string(), "22:10");
 }
