@@ -105,7 +105,6 @@ fn advance_decreases_the_x_coordinate_by_one_when_facing_west() {
 }
 
 #[test]
-#[ignore]
 fn follow_instructions_to_move_west_and_north() {
     let robot = Robot::new(0, 0, Direction::North).instructions("LAAARALA");
     assert_eq!((-4, 1), robot.position());
@@ -113,7 +112,6 @@ fn follow_instructions_to_move_west_and_north() {
 }
 
 #[test]
-#[ignore]
 fn follow_instructions_to_move_west_and_south() {
     let robot = Robot::new(2, -7, Direction::East).instructions("RRAAAAALA");
     assert_eq!((-3, -8), robot.position());
@@ -121,7 +119,6 @@ fn follow_instructions_to_move_west_and_south() {
 }
 
 #[test]
-#[ignore]
 fn follow_instructions_to_move_east_and_north() {
     let robot = Robot::new(8, 4, Direction::South).instructions("LAAARRRALLLL");
     assert_eq!((11, 5), robot.position());

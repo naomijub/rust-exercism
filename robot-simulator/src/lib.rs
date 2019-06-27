@@ -20,21 +20,23 @@ impl Robot {
     }
 
     pub fn turn_right(self) -> Self {
-        match self.direction {
-            Direction::North => Robot {position: self.position, direction: Direction::East},
-            Direction::East => Robot {position: self.position, direction: Direction::South},
-            Direction::South => Robot {position: self.position, direction: Direction::West},
-            Direction::West => Robot {position: self.position, direction: Direction::North}
-        }
+        let d = match self.direction {
+            Direction::North =>  Direction::East,
+            Direction::East =>  Direction::South,
+            Direction::South =>  Direction::West,
+            Direction::West =>  Direction::North,
+        };
+        Robot{position: self.position, direction: d}
     }
 
     pub fn turn_left(self) -> Self {
-        match self.direction {
-            Direction::North => Robot {position: self.position, direction: Direction::West},
-            Direction::East => Robot {position: self.position, direction: Direction::North},
-            Direction::South => Robot {position: self.position, direction: Direction::East},
-            Direction::West => Robot {position: self.position, direction: Direction::South}
-        }    
+        let d = match self.direction {
+            Direction::North =>  Direction::West,
+            Direction::East =>  Direction::North,
+            Direction::South =>  Direction::East,
+            Direction::West =>  Direction::South,
+        };
+        Robot{position: self.position, direction: d}    
     }
 
     pub fn advance(self) -> Self {
@@ -51,10 +53,15 @@ impl Robot {
     }
 
     pub fn instructions(self, instructions: &str) -> Self {
-        unimplemented!(
-            "Follow the given sequence of instructions: {}",
-            instructions
-        )
+        instructions.chars()
+            .fold(self, |robot, x| {
+                match x {
+                    'A' => robot.advance(),
+                    'R' => robot.turn_right(),
+                    'L' => robot.turn_left(),
+                    _ => robot,
+                }
+            })
     }
 
     pub fn position(&self) -> (i32, i32) {
