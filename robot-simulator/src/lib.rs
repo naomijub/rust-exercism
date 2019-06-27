@@ -20,11 +20,21 @@ impl Robot {
     }
 
     pub fn turn_right(self) -> Self {
-        self
+        match self.direction {
+            Direction::North => Robot {position: self.position, direction: Direction::East},
+            Direction::East => Robot {position: self.position, direction: Direction::South},
+            Direction::South => Robot {position: self.position, direction: Direction::West},
+            Direction::West => Robot {position: self.position, direction: Direction::North}
+        }
     }
 
     pub fn turn_left(self) -> Self {
-        unimplemented!()
+        match self.direction {
+            Direction::North => Robot {position: self.position, direction: Direction::West},
+            Direction::East => Robot {position: self.position, direction: Direction::North},
+            Direction::South => Robot {position: self.position, direction: Direction::East},
+            Direction::West => Robot {position: self.position, direction: Direction::South}
+        }    
     }
 
     pub fn advance(self) -> Self {

@@ -21,63 +21,54 @@ fn turning_right_does_not_change_position() {
 }
 
 #[test]
-#[ignore]
 fn turning_right_from_north_points_the_robot_east() {
     let robot = Robot::new(0, 0, Direction::North).turn_right();
     assert_eq!(&Direction::East, robot.direction());
 }
 
 #[test]
-#[ignore]
 fn turning_right_from_east_points_the_robot_south() {
     let robot = Robot::new(0, 0, Direction::East).turn_right();
     assert_eq!(&Direction::South, robot.direction());
 }
 
 #[test]
-#[ignore]
 fn turning_right_from_south_points_the_robot_west() {
     let robot = Robot::new(0, 0, Direction::South).turn_right();
     assert_eq!(&Direction::West, robot.direction());
 }
 
 #[test]
-#[ignore]
 fn turning_right_from_west_points_the_robot_north() {
     let robot = Robot::new(0, 0, Direction::West).turn_right();
     assert_eq!(&Direction::North, robot.direction());
 }
 
 #[test]
-#[ignore]
 fn turning_left_does_not_change_position() {
     let robot = Robot::new(0, 0, Direction::North).turn_left();
     assert_eq!((0, 0), robot.position());
 }
 
 #[test]
-#[ignore]
 fn turning_left_from_north_points_the_robot_west() {
     let robot = Robot::new(0, 0, Direction::North).turn_left();
     assert_eq!(&Direction::West, robot.direction());
 }
 
 #[test]
-#[ignore]
 fn turning_left_from_west_points_the_robot_south() {
     let robot = Robot::new(0, 0, Direction::West).turn_left();
     assert_eq!(&Direction::South, robot.direction());
 }
 
 #[test]
-#[ignore]
 fn turning_left_from_south_points_the_robot_east() {
     let robot = Robot::new(0, 0, Direction::South).turn_left();
     assert_eq!(&Direction::East, robot.direction());
 }
 
 #[test]
-#[ignore]
 fn turning_left_from_east_points_the_robot_north() {
     let robot = Robot::new(0, 0, Direction::East).turn_left();
     assert_eq!(&Direction::North, robot.direction());
