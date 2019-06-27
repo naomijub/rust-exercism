@@ -19,7 +19,7 @@ impl Clock {
     }
 
     pub fn add_minutes(&self, minutes: i32) -> Self {
-        unimplemented!("Add {} minutes to existing Clock time", minutes);
+        Clock::new(self.hours, self.minutes + minutes)
     }
 
     pub fn to_string(&self) -> String {
@@ -39,16 +39,18 @@ fn ajust_hours(hours: i32, minutes: &i32) -> i32 {
     let extra_min = minutes / FULL_MINUTES;
 
     match hours {
-            hr if hours >= 0 && minutes < &0 && minutes >= &-60
-              => hr + NEG_MINS_AJUSTMENT,
-            hr if hours >= 0 && minutes < &0 
-              => hr + (FULL_HOUR + (extra_min % FULL_HOUR) + NEG_MINS_AJUSTMENT),
-            h if hours >= 0 => h + extra_min,
-            xr if hours < 0 && minutes < &0 
-              => FULL_HOUR + ((xr + extra_min) % FULL_HOUR) + NEG_MINS_AJUSTMENT,
-            x if hours < 0 
-              => FULL_HOUR + (x % FULL_HOUR),
+        hr if hours >= 0 && minutes == &-1 
+            => hr + (FULL_HOUR + (extra_min % FULL_HOUR) -1),
+        hr if hours >= 0 && minutes < &0 && minutes >= &-60
+            => hr + NEG_MINS_AJUSTMENT,
+        hr if hours >= 0 && minutes < &0 
+            => hr + (FULL_HOUR + (extra_min % FULL_HOUR) + NEG_MINS_AJUSTMENT),
+        hr if hours >= 0 => hr + extra_min,
+        hr if hours < 0 && minutes < &0 
+            => FULL_HOUR + ((hr + extra_min) % FULL_HOUR) + NEG_MINS_AJUSTMENT,
+        hr if hours < 0 
+            => FULL_HOUR + (hr % FULL_HOUR),
 
-            _ => 0
+        _ => 0
         }
 }
