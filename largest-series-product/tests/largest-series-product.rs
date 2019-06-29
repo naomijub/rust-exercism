@@ -87,5 +87,5 @@ fn empty_string_and_non_zero_span_is_an_error() {
 
 #[test]
 fn a_string_with_non_digits_is_an_error() {
-    assert_eq!(Err(Error::InvalidDigit(String::from("a"))), lsp("1234a5", 2));
+    assert_eq!(Err(Error::InvalidDigit('a')), lsp("1234a5", 2));
 }

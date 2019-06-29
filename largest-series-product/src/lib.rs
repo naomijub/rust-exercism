@@ -1,7 +1,7 @@
 #[derive(Debug, PartialEq)]
 pub enum Error {
     SpanTooLong,
-    InvalidDigit(String),
+    InvalidDigit(char),
 }
 
 pub fn lsp(string_digits: &str, span: usize) -> Result<u64, Error> {
@@ -9,7 +9,11 @@ pub fn lsp(string_digits: &str, span: usize) -> Result<u64, Error> {
     else if span == 0 { return Ok(1u64); }
     else if string_digits.matches(char::is_alphabetic).collect::<Vec<&str>>().len() > 0 {
         let digit = string_digits.matches(char::is_alphabetic).collect::<Vec<&str>>();
-        return Err(Error::InvalidDigit(digit.first().unwrap().to_owned().to_string()));
+        return Err(Error::InvalidDigit(digit
+                .first().unwrap()
+                .to_owned()
+                .to_string()
+                .pop().unwrap()));
     }
 
     let digits: Vec<u64> = string_digits
