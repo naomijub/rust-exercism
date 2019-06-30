@@ -73,7 +73,7 @@ mod orders {
         _ => (0, "")
       })
       .fold(vec, |mut acc, h| {
-        if h.0 > acc[0].0 {
+        if h.0 >= acc[0].0 {
           acc.retain(|&x| x.0 >= h.0);
           acc.push((h.0, h.1));
         }
