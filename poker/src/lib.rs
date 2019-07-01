@@ -6,7 +6,7 @@ enum HandOrder {
     // Pair = 2,
 }
 
-fn determine_hand_type<'a>(hand: &'a str) -> HandOrder {
+fn determine_hand_type<'a>(_hand: &'a str) -> HandOrder {
   HandOrder::HighCard
 }
 
@@ -55,7 +55,7 @@ mod orders {
     let mut vec: Vec<(i32,&'a str)> = Vec::new();
     vec.push((-1, ""));
 
-    hands.into_iter()
+    let highest_hands = hands.into_iter()
       .map(|h| match h {
         hand if hand.contains("A") => (14, hand),
         hand if hand.contains("K") => (13, hand),
@@ -78,9 +78,50 @@ mod orders {
           acc.push((h.0, h.1));
         }
         acc
+      });
+     ranked_hands(highest_hands)
+  }
+
+  fn ranked_hands<'a>(vec: Vec<(i32, &'a str)>) -> Vec<&'a str> {
+    let mut ranked_vec: Vec<(i32,&'a str)> = Vec::new();
+    ranked_vec.push((-1, ""));
+
+    vec.iter()
+      .map(|h| h.1)
+      .collect::<Vec<&'a str>>()
+      .iter()
+      .map(|h| (h.split(" ")
+                .into_iter()
+                .map(|c| match_card_value(c))
+                .fold(0,|acc,c| acc + c), h))
+      .fold(ranked_vec, |mut acc, h| {
+        if h.0 >= acc[0].0 {
+          acc.retain(|&x| x.0 >= h.0);
+          acc.push((h.0, h.1));
+        }
+        acc
       })
       .iter()
       .map(|h| h.1)
       .collect::<Vec<&'a str>>()
+  }
+
+  fn match_card_value<'a>(c: &'a str) -> i32 {
+    match c {
+      c if c.contains("A") => 60547001,
+      c if c.contains("K") => 12109401,
+      c if c.contains("Q") => 2421881,
+      c if c.contains("J") => 484376,
+      c if c.contains("10") => 96876,
+      c if c.contains("9") => 19376,
+      c if c.contains("8") => 3876,
+      c if c.contains("7") => 776,
+      c if c.contains("6") => 155,
+      c if c.contains("5") => 31,
+      c if c.contains("4") => 6,
+      c if c.contains("3") => 1,
+      c if c.contains("2") => 0,
+      _ => 0
+    }
   }
 }
