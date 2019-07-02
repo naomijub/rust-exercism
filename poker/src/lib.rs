@@ -1,13 +1,19 @@
-use orders::{get_highest_card};
+use orders::{get_highest_card, get_highest_pair, determine_hand_group};
 
 #[derive(Ord, PartialOrd, Eq, PartialEq, Debug, Copy, Clone)]
 enum HandOrder {
     HighCard = 1,
-    // Pair = 2,
+    Pair = 2,
 }
 
-fn determine_hand_type<'a>(_hand: &'a str) -> HandOrder {
-  HandOrder::HighCard
+fn determine_hand_type<'a>(hand: &'a str) -> HandOrder {
+  let values_map = determine_hand_group(hand);
+  
+  match values_map.values() {
+    ref m if m.len() == 5 =>   HandOrder::HighCard,
+    ref m if m.len() == 4 =>   HandOrder::Pair,
+    _ => HandOrder::HighCard
+  }
 }
 
 fn determine_best_game(hands: &mut Vec<HandOrder>) -> &HandOrder {
@@ -25,7 +31,7 @@ fn filter_hands_by_winner<'a>(hands: Vec<(HandOrder, &'a str)>, order: HandOrder
 fn get_best<'a>(hands: Vec<&'a str>, order: &HandOrder ) -> Vec<&'a str> {
   match order.to_owned() {
       HandOrder::HighCard => get_highest_card(hands),
-      // HandOrder::Pair => get_highest_pair(hands),
+      HandOrder::Pair => get_highest_pair(hands),
   }
 }
 
@@ -36,7 +42,7 @@ fn return_best_hands<'a>(hands: Vec<(HandOrder, &'a str)>) -> Vec<&'a str> {
   let best_game = determine_best_game(&mut orders);
   let high_hands = match best_game {
     HandOrder::HighCard => filter_hands_by_winner(hands, HandOrder::HighCard),
-    // HandOrder::Pair => filter_hands_by_winner(hands, HandOrder::Pair),
+    HandOrder::Pair => filter_hands_by_winner(hands, HandOrder::Pair),
   };
   get_best(high_hands, best_game)                
 }
@@ -51,6 +57,32 @@ pub fn winning_hands<'a>(hands: &[&'a str]) -> Option<Vec<&'a str>> {
 }
 
 mod orders {
+  use std::collections::HashMap;
+
+  pub fn determine_hand_group<'a>(hand: &'a str ) -> HashMap<&'a str, i32> {
+    let mut values_map: HashMap<&'a str, i32> = HashMap::new();
+      hand.split(" ")
+          .into_iter()
+          .for_each(|c| 
+            match c {
+              c if c.contains("A") => *values_map.entry("A").or_insert(0) += 1,
+              c if c.contains("K") => *values_map.entry("K").or_insert(0) += 1,
+              c if c.contains("Q") => *values_map.entry("Q").or_insert(0) += 1,
+              c if c.contains("J") => *values_map.entry("J").or_insert(0) += 1,
+              c if c.contains("10") => *values_map.entry("10").or_insert(0) += 1,
+              c if c.contains("9") => *values_map.entry("9").or_insert(0) += 1,
+              c if c.contains("8") => *values_map.entry("8").or_insert(0) += 1,
+              c if c.contains("7") => *values_map.entry("7").or_insert(0) += 1,
+              c if c.contains("6") => *values_map.entry("6").or_insert(0) += 1,
+              c if c.contains("5") => *values_map.entry("5").or_insert(0) += 1,
+              c if c.contains("4") => *values_map.entry("4").or_insert(0) += 1,
+              c if c.contains("3") => *values_map.entry("3").or_insert(0) += 1,
+              c if c.contains("2") => *values_map.entry("2").or_insert(0) += 1,
+              _ => *values_map.entry("0").or_insert(0) += 0
+            });
+    values_map
+  }
+
   pub fn get_highest_card<'a> (hands: Vec<&'a str>)  -> Vec<&'a str> {
     let mut vec: Vec<(i32,&'a str)> = Vec::new();
     vec.push((-1, ""));
@@ -80,6 +112,41 @@ mod orders {
         acc
       });
      ranked_hands(highest_hands)
+  }
+
+  pub fn get_highest_pair<'a> (hands: Vec<&'a str>)  -> Vec<&'a str> {
+    let values_map = hands.iter()
+        .map(|h| determine_hand_group(h))
+        .map(|h| h.keys().into_iter()
+            .flat_map(|&k| h.get(&k).map(|&v| (k,v)).into_iter())
+            .fold(Vec::new(),|mut acc,v| {acc.push(v); acc}))
+        .map(|h| h.iter()
+            .fold(("",0),|acc, c| {if c.1 > acc.1 { return (c.0,c.1); } acc}))
+        .collect::<Vec<(&'a str, i32)>>();
+
+    let max_pair = values_map.iter()
+        .map(|c| match c {
+            card if card.0.contains("A") => (14, card.0),
+            card if card.0.contains("K") => (13, card.0),
+            card if card.0.contains("Q") => (12, card.0),
+            card if card.0.contains("J") => (11, card.0),
+            card if card.0.contains("10") => (10, card.0),
+            card if card.0.contains("9") => (9, card.0),
+            card if card.0.contains("8") => (8, card.0),
+            card if card.0.contains("7") => (7, card.0),
+            card if card.0.contains("6") => (6, card.0),
+            card if card.0.contains("5") => (5, card.0),
+            card if card.0.contains("4") => (4, card.0),
+            card if card.0.contains("3") => (3, card.0),
+            card if card.0.contains("2") => (2, card.0),
+            _ => (0, "0")
+        })
+        .fold((0,""), |acc, c| {if c.0 > acc.0 { return (c.0, c.1);} acc});
+
+    hands.iter()
+          .filter(|h| h.contains(max_pair.1))
+          .map(|h| h.to_owned())
+          .collect::<Vec<&'a str>>()
   }
 
   fn ranked_hands<'a>(vec: Vec<(i32, &'a str)>) -> Vec<&'a str> {

@@ -48,7 +48,6 @@ fn test_a_tie_has_multiple_winners() {
 }
 
 #[test]
-#[ignore]
 fn test_high_card_can_be_low_card_in_an_otherwise_tie() {
     // multiple hands with the same high cards, tie compares next highest ranked,
     // down to last card
@@ -56,7 +55,6 @@ fn test_high_card_can_be_low_card_in_an_otherwise_tie() {
 }
 
 #[test]
-#[ignore]
 fn test_one_pair_beats_high_card() {
     test(&["4S 5H 6C 8D KH", "2S 4H 6S 4D JH"], &["2S 4H 6S 4D JH"])
 }
