@@ -60,7 +60,6 @@ fn test_one_pair_beats_high_card() {
 }
 
 #[test]
-#[ignore]
 fn test_highest_pair_wins() {
     test(&["4S 2H 6S 2D JH", "2S 4H 6C 4D JD"], &["2S 4H 6C 4D JD"])
 }

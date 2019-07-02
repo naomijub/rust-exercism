@@ -115,36 +115,15 @@ mod orders {
   }
 
   pub fn get_highest_pair<'a> (hands: Vec<&'a str>)  -> Vec<&'a str> {
-    let values_map = hands.iter()
-        .map(|h| determine_hand_group(h))
-        .map(|h| h.keys().into_iter()
-            .flat_map(|&k| h.get(&k).map(|&v| (k,v)).into_iter())
-            .fold(Vec::new(),|mut acc,v| {acc.push(v); acc}))
-        .map(|h| h.iter()
-            .fold(("",0),|acc, c| {if c.1 > acc.1 { return (c.0,c.1); } acc}))
-        .collect::<Vec<(&'a str, i32)>>();
+    let values_map = values_map(&hands);
 
-    let max_pair = values_map.iter()
-        .map(|c| match c {
-            card if card.0.contains("A") => (14, card.0),
-            card if card.0.contains("K") => (13, card.0),
-            card if card.0.contains("Q") => (12, card.0),
-            card if card.0.contains("J") => (11, card.0),
-            card if card.0.contains("10") => (10, card.0),
-            card if card.0.contains("9") => (9, card.0),
-            card if card.0.contains("8") => (8, card.0),
-            card if card.0.contains("7") => (7, card.0),
-            card if card.0.contains("6") => (6, card.0),
-            card if card.0.contains("5") => (5, card.0),
-            card if card.0.contains("4") => (4, card.0),
-            card if card.0.contains("3") => (3, card.0),
-            card if card.0.contains("2") => (2, card.0),
-            _ => (0, "0")
-        })
-        .fold((0,""), |acc, c| {if c.0 > acc.0 { return (c.0, c.1);} acc});
+    let max_pair = max_pair(&values_map);
 
     hands.iter()
-          .filter(|h| h.contains(max_pair.1))
+          .filter(|h| h.split("")
+              .into_iter()
+              .filter(|c| c.contains(max_pair))
+              .fold(0,|acc, _c| acc + 1) >= 2)
           .map(|h| h.to_owned())
           .collect::<Vec<&'a str>>()
   }
@@ -190,5 +169,37 @@ mod orders {
       c if c.contains("2") => 0,
       _ => 0
     }
+  }
+
+  fn values_map<'a> (hands: &Vec<&'a str>) -> Vec<(&'a str, i32)> {
+    hands.iter()
+        .map(|h| determine_hand_group(h))
+        .map(|h| h.keys().into_iter()
+            .flat_map(|&k| h.get(&k).map(|&v| (k,v)).into_iter())
+            .fold(Vec::new(),|mut acc,v| {acc.push(v); acc}))
+        .map(|h| h.iter()
+            .fold(("",0),|acc, c| {if c.1 > acc.1 { return (c.0,c.1); } acc}))
+        .collect::<Vec<(&'a str, i32)>>()
+  }
+
+  fn max_pair<'a>(hand_map: &Vec<(&'a str, i32)>) -> &'a str {
+    hand_map.iter()
+        .map(|c| match c {
+            card if card.0.contains("A") => (14, card.0),
+            card if card.0.contains("K") => (13, card.0),
+            card if card.0.contains("Q") => (12, card.0),
+            card if card.0.contains("J") => (11, card.0),
+            card if card.0.contains("10") => (10, card.0),
+            card if card.0.contains("9") => (9, card.0),
+            card if card.0.contains("8") => (8, card.0),
+            card if card.0.contains("7") => (7, card.0),
+            card if card.0.contains("6") => (6, card.0),
+            card if card.0.contains("5") => (5, card.0),
+            card if card.0.contains("4") => (4, card.0),
+            card if card.0.contains("3") => (3, card.0),
+            card if card.0.contains("2") => (2, card.0),
+            _ => (0, "0")
+        })
+        .fold((0,""), |acc, c| {if c.0 > acc.0 { return (c.0, c.1);} acc}).1
   }
 }
