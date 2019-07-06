@@ -43,7 +43,6 @@ fn multiplication() {
 }
 
 #[test]
-#[ignore]
 fn division() {
     let command = "What is 33 divided by -3?";
     assert_eq!(Some(-11), answer(command));
