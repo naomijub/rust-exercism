@@ -7,7 +7,6 @@ fn just_a_number() {
 }
 
 #[test]
-#[ignore]
 fn addition() {
     let command = "What is 1 plus 1?";
     assert_eq!(Some(2), answer(command));
