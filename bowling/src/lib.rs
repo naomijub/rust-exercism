@@ -66,11 +66,11 @@ impl BowlingGame {
     }
 
     pub fn roll(&mut self, pins: u16) -> Result<(), Error> {
-        if (self.frames.len() == MAX_FRAMES
-            && self.frames.last().unwrap().is_closed()
-            && !self.frames.last().unwrap().is_strike()
-            && !self.frames.last().unwrap().is_spare())
-            || self.frames.len() > MAX_FRAMES
+        if self.frames.len() >= MAX_FRAMES + 1
+            || (self.frames.len() == MAX_FRAMES
+                && self.frames.last().unwrap().is_closed()
+                && !self.frames.last().unwrap().is_strike()
+                && !self.frames.last().unwrap().is_spare())
         {
             return Err(Error::GameComplete);
         }
