@@ -100,27 +100,22 @@ impl BowlingGame {
         if self.has_last_frame() {
             self.frames.last_mut().unwrap().roll(roll)?;
         } else {
+            let last = self.frames.last_mut();
+
             if let Some(r) = self.current_roll.take() {
-                self.frames
-                    .last_mut()
-                    .filter(|last| last.is_strike())
-                    .map(|last| {
-                        last.rolls.push(r);
-                        last.rolls.push(roll);
-                    });
+                last.filter(|last| last.is_strike()).map(|last| {
+                    last.rolls.push(r);
+                    last.rolls.push(roll);
+                });
                 self.frames.push(Frame::new(r, roll)?);
             } else if roll == 10 {
-                self.frames
-                    .last_mut()
-                    .filter(|l| l.is_spare() || l.is_strike())
+                last.filter(|l| l.is_spare() || l.is_strike())
                     .map(|last| last.rolls.push(roll));
 
                 self.frames.push(Frame::strike());
             } else {
                 self.current_roll = Some(roll);
-                self.frames
-                    .last_mut()
-                    .filter(|last| last.is_spare())
+                last.filter(|l| l.is_spare())
                     .map(|last| last.rolls.push(roll));
             }
         }
