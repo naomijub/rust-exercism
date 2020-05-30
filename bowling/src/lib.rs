@@ -4,59 +4,69 @@ pub enum Error {
     GameComplete,
 }
 
-const MAX_FRAMES: usize = 10;
-type Score = Option<u16>;
-
 #[derive(Debug)]
-enum FrameScore {
-    Strike,
-    Spare(u16),
-    Score(u16, u16),
+struct Frame {
+    rolls: Vec<Roll>,
 }
 
-#[derive(Copy, Clone, Debug)]
-struct Frame(Score, Score);
-
 impl Frame {
-    fn is_strike(&self) -> bool {
-        self.0 == Some(10)
+    fn new(r1: Roll, r2: Roll) -> Result<Self, Error> {
+        if r1 + r2 > 10 {
+            Err(Error::NotEnoughPinsLeft)
+        } else {
+            Ok(Self {
+                rolls: vec![r1, r2],
+            })
+        }
     }
 
     fn is_spare(&self) -> bool {
-        self.0.unwrap_or(0) + self.1.unwrap_or(0) == 10
+        !self.is_strike() && self.rolls.iter().take(2).map(|r| r.pins).sum::<u16>() == 10u16
     }
 
-    fn is_closed(&self) -> bool {
-        self.1.is_some() || self.is_strike()
+    fn is_strike(&self) -> bool {
+        self.rolls.first().map_or(false, |r| r.pins == 10)
     }
 
-    fn roll(&mut self, pins: u16) {
-        assert!(!self.is_closed());
-
-        match self {
-            Self(None, None) => self.0 = Some(pins),
-            Self(Some(_), None) => self.1 = Some(pins),
-            _ => panic!("Douglas viajou!"),
-        }
-    }
-
-    fn new(pins: u16) -> Self {
-        Self(Some(pins), None)
-    }
-
-    fn score(&self) -> Option<FrameScore> {
-        match self {
-            _ if self.is_strike() => Some(FrameScore::Strike),
-            Self(Some(x), _) if self.is_spare() => Some(FrameScore::Spare(*x)),
-            Self(Some(x), None) => Some(FrameScore::Score(*x, 0)),
-            Self(Some(x), Some(y)) => Some(FrameScore::Score(*x, *y)),
-            _ => None,
+    fn strike() -> Self {
+        Self {
+            rolls: vec![Roll { pins: 10u16 }],
         }
     }
 }
 
-#[derive(Default)]
+#[derive(Copy, Clone, Default, Debug)]
+struct Roll {
+    pins: u16,
+}
+
+impl Roll {
+    fn new(pins: u16) -> Result<Self, Error> {
+        if pins > 10 {
+            Err(Error::NotEnoughPinsLeft)
+        } else {
+            Ok(Self { pins })
+        }
+    }
+}
+
+impl std::cmp::PartialEq<u16> for Roll {
+    fn eq(&self, c: &u16) -> bool {
+        self.pins == *c
+    }
+}
+
+impl std::ops::Add for Roll {
+    type Output = u16;
+
+    fn add(self, rhs: Self) -> Self::Output {
+        self.pins + rhs.pins
+    }
+}
+
+#[derive(Default, Debug)]
 pub struct BowlingGame {
+    current_roll: Option<Roll>,
     frames: Vec<Frame>,
 }
 
@@ -66,56 +76,51 @@ impl BowlingGame {
     }
 
     pub fn roll(&mut self, pins: u16) -> Result<(), Error> {
-        if self.frames.len() >= MAX_FRAMES + 1
-            || (self.frames.len() == MAX_FRAMES
-                && self.frames.last().unwrap().is_closed()
-                && !self.frames.last().unwrap().is_strike()
-                && !self.frames.last().unwrap().is_spare())
-        {
+        let roll = Roll::new(pins)?;
+        if self.is_game_finished() {
             return Err(Error::GameComplete);
         }
-        if pins > 10 {
-            return Err(Error::NotEnoughPinsLeft);
-        }
 
-        match self.frames.last_mut() {
-            None => self.frames.push(Frame::new(pins)),
-            Some(f) if f.is_closed() => self.frames.push(Frame::new(pins)),
-            Some(f) if f.0.unwrap() + pins > 10 => {
-                return Err(Error::NotEnoughPinsLeft);
+        if let Some(r) = self.current_roll.take() {
+            self.frames
+                .last_mut()
+                .filter(|last| last.is_strike())
+                .map(|last| {
+                    last.rolls.push(r);
+                    last.rolls.push(roll);
+                });
+            if self.frames.len() != 10 {
+                self.frames.push(Frame::new(r, roll)?);
             }
-            Some(f) => f.roll(pins),
-        };
+        } else {
+            if roll == 10 && self.frames.len() < 10 {
+                self.frames.push(Frame::strike());
+            } else {
+                self.current_roll = Some(roll);
+                self.frames
+                    .last_mut()
+                    .filter(|last| last.is_spare())
+                    .map(|last| last.rolls.push(roll));
+            }
+        }
 
         Ok(())
     }
 
     pub fn score(&self) -> Option<u16> {
-        if self.frames.len() < 10 {
-            None
+        if self.is_game_finished() {
+            Some(self.frames.iter().fold(0u16, |acc, f| {
+                acc + f.rolls.iter().fold(0u16, |sum, r| sum + r.pins)
+            }))
         } else {
-            let two_empty_frames = [Frame(Some(0), Some(0)); 2];
-            Some(
-                self.frames
-                    .iter()
-                    .chain(two_empty_frames.iter())
-                    .map(|f| f.score().expect("otavio ?"))
-                    .collect::<Vec<FrameScore>>()
-                    .windows(3)
-                    .map(|w| match w {
-                        &[FrameScore::Score(a, b), _, _] => a + b,
-                        &[FrameScore::Spare(_), FrameScore::Score(a, _), _]
-                        | &[FrameScore::Spare(_), FrameScore::Spare(a), _] => 10 + a,
-                        &[FrameScore::Spare(_), FrameScore::Strike, _] => 20,
-                        &[FrameScore::Strike, FrameScore::Score(a, b), _] => 10 + a + b,
-                        &[FrameScore::Strike, FrameScore::Spare(_), _] => 20,
-                        &[FrameScore::Strike, FrameScore::Strike, FrameScore::Score(a, _)]
-                        | &[FrameScore::Strike, FrameScore::Strike, FrameScore::Spare(a)] => 20 + a,
-                        &[FrameScore::Strike, FrameScore::Strike, FrameScore::Strike] => 30,
-                        _ => 0,
-                    })
-                    .sum(),
-            )
+            None
         }
+    }
+
+    fn is_game_finished(&self) -> bool {
+        self.frames.len() >= 10
+            && ((!self.frames.last().unwrap().is_spare()
+                && !self.frames.last().unwrap().is_strike())
+                || self.frames.last().unwrap().rolls.len() == 3)
     }
 }
