@@ -1,3 +1,5 @@
+const MAX_FRAMES: usize = 10;
+
 #[derive(Debug, PartialEq)]
 pub enum Error {
     NotEnoughPinsLeft,
@@ -20,6 +22,16 @@ impl Frame {
         }
     }
 
+    fn roll(&mut self, r: Roll) -> Result<(), Error> {
+        let last = self.rolls.last().map(|l| *l).unwrap_or_default();
+        if self.is_spare() || (self.is_strike() && (last == 10 || last + r <= 10)) {
+            self.rolls.push(r);
+            Ok(())
+        } else {
+            Err(Error::NotEnoughPinsLeft)
+        }
+    }
+
     fn is_spare(&self) -> bool {
         !self.is_strike() && self.rolls.iter().take(2).map(|r| r.pins).sum::<u16>() == 10u16
     }
@@ -32,6 +44,10 @@ impl Frame {
         Self {
             rolls: vec![Roll { pins: 10u16 }],
         }
+    }
+
+    fn is_finished(&self) -> bool {
+        (!self.is_spare() && !self.is_strike()) || self.rolls.len() == 3
     }
 }
 
@@ -81,19 +97,24 @@ impl BowlingGame {
             return Err(Error::GameComplete);
         }
 
-        if let Some(r) = self.current_roll.take() {
-            self.frames
-                .last_mut()
-                .filter(|last| last.is_strike())
-                .map(|last| {
-                    last.rolls.push(r);
-                    last.rolls.push(roll);
-                });
-            if self.frames.len() != 10 {
-                self.frames.push(Frame::new(r, roll)?);
-            }
+        if self.has_last_frame() {
+            self.frames.last_mut().unwrap().roll(roll)?;
         } else {
-            if roll == 10 && self.frames.len() < 10 {
+            if let Some(r) = self.current_roll.take() {
+                self.frames
+                    .last_mut()
+                    .filter(|last| last.is_strike())
+                    .map(|last| {
+                        last.rolls.push(r);
+                        last.rolls.push(roll);
+                    });
+                self.frames.push(Frame::new(r, roll)?);
+            } else if roll == 10 {
+                self.frames
+                    .last_mut()
+                    .filter(|l| l.is_spare() || l.is_strike())
+                    .map(|last| last.rolls.push(roll));
+
                 self.frames.push(Frame::strike());
             } else {
                 self.current_roll = Some(roll);
@@ -118,9 +139,10 @@ impl BowlingGame {
     }
 
     fn is_game_finished(&self) -> bool {
-        self.frames.len() >= 10
-            && ((!self.frames.last().unwrap().is_spare()
-                && !self.frames.last().unwrap().is_strike())
-                || self.frames.last().unwrap().rolls.len() == 3)
+        self.has_last_frame() && self.frames.last().unwrap().is_finished()
+    }
+
+    fn has_last_frame(&self) -> bool {
+        self.frames.len() == MAX_FRAMES
     }
 }
