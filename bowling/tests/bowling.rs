@@ -168,7 +168,6 @@ fn points_scored_in_the_two_rolls_after_a_strike_are_counted_twice_as_a_bonus() 
 }
 
 #[test]
-#[ignore]
 fn consecutive_strikes_each_get_the_two_roll_bonus() {
     let mut game = BowlingGame::new();
 
