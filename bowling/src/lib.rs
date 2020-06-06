@@ -22,10 +22,10 @@ impl Frame {
         }
     }
 
-    fn roll(&mut self, r: Roll) -> Result<(), Error> {
-        let last = self.rolls.last().map(|l| *l).unwrap_or_default();
-        if self.is_spare() || (self.is_strike() && (last == 10 || last + r <= 10)) {
-            self.rolls.push(r);
+    fn roll(&mut self, roll: Roll) -> Result<(), Error> {
+        let last = self.rolls.last().map(|last| *last).unwrap_or_default();
+        if self.is_spare() || (self.is_strike() && (last == 10 || last + roll <= 10)) {
+            self.rolls.push(roll);
             Ok(())
         } else {
             Err(Error::NotEnoughPinsLeft)
