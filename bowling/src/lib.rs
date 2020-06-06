@@ -97,19 +97,17 @@ impl BowlingGame {
             return Err(Error::GameComplete);
         }
 
-        if self.has_last_frame() {
-            self.frames.last_mut().unwrap().roll(roll)?;
-        } else {
-            for last in self
-                .frames
-                .iter_mut()
-                .rev()
-                .take(2)
-                .filter(|last| !last.is_finished())
-            {
-                last.roll(roll)?;
-            }
+        for last in self
+            .frames
+            .iter_mut()
+            .rev()
+            .take(2)
+            .filter(|last| !last.is_finished())
+        {
+            last.roll(roll)?;
+        }
 
+        if !self.has_last_frame() {
             if let Some(r) = self.current_roll.take() {
                 self.frames.push(Frame::new(r, roll)?);
             } else if roll == 10 {
