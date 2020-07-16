@@ -4,7 +4,7 @@ pub fn is_valid(code: &str) -> bool {
         return false;
     }
 
-    let num_val = code
+    code
         .replace(" ", "")
         .chars()
         .rev()
@@ -16,10 +16,6 @@ pub fn is_valid(code: &str) -> bool {
                 (1, Some(v)) if v == 9 => Some(acc + v),
                 (1, Some(v)) => Some(acc + ((v * 2) % 9)),
                 _ => None
-            });
-
-    match num_val {
-        Some(v) => v % 10 == 0,
-        None =>  false
-    }
+            })
+        .map_or(false, |v| v % 10 == 0)
 }
